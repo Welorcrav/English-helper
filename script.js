@@ -171,9 +171,9 @@ function switchSection(section) {
   currentIndex = 0
   isCardFlipped = false
 
-  const lugatBtn = document.getElementById('nav-lugat-btn')
-  const speakingBtn = document.getElementById('nav-speaking-btn')
-  const lugatContent = document.getElementById('lugat-section-content')
+  const lugatBtn = document.getElementById('tab-vocab')
+  const speakingBtn = document.getElementById('tab-speaking')
+  const lugatContent = document.getElementById('vocab-section-content')
   const speakingContent = document.getElementById('speaking-section-content')
   const sidebarTitle = document.getElementById('sidebar-title')
   const addInput = document.getElementById('new-item-name')
@@ -251,7 +251,7 @@ function updateCardUI() {
     const words = userLessonsData[currentLesson] || []
     document.getElementById('current-lesson-title').textContent =
       currentLesson || 'Dars tanlanmagan'
-    document.getElementById('card-counter').textContent =
+    document.getElementById('progress').textContent =
       words.length > 0 ? `${currentIndex + 1} / ${words.length}` : '0 / 0'
 
     const wordText = document.getElementById('card-word-text')
@@ -484,36 +484,46 @@ async function clearCurrentLessonWords() {
   }
 }
 
-function initDOMEvents() {
-  const toggleToRegister = document.getElementById('toggle-to-register')
-  const authTitle = document.getElementById('auth-title')
-  const authSubmitBtn = document.getElementById('auth-submit-btn')
-  const authSwitchText = document.getElementById('auth-switch-text')
+function togglePasswordVisibility() {
+  const passwordInput = document.getElementById('auth-password')
+  const toggleBtn = document.getElementById('toggle-password-eye')
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text'
+    toggleBtn.textContent = '🙈'
+  } else {
+    passwordInput.type = 'password'
+    toggleBtn.textContent = '👁️'
+  }
+}
 
-  if (toggleToRegister) {
-    toggleToRegister.onclick = (e) => {
+function initDOMEvents() {
+  const toggleLink = document.getElementById('auth-toggle-link')
+  const authTitle = document.getElementById('auth-title')
+  const authSubmitBtn = document.getElementById('auth-main-btn')
+  const authToggleText = document.getElementById('auth-toggle-text')
+
+  if (toggleLink) {
+    toggleLink.onclick = (e) => {
       e.preventDefault()
-      isLoginMode = false
-      authTitle.textContent = "Ro'yxatdan O'tish"
-      authSubmitBtn.textContent = "Ro'yxatdan O'tish"
-      authSwitchText.innerHTML =
-        'Akkauntingiz bormi? <a href="#" id="toggle-to-login">Tizimga kirish</a>'
-      document.getElementById('toggle-to-login').onclick = (el) => {
-        el.preventDefault()
-        isLoginMode = true
+      isLoginMode = !isLoginMode
+      if (isLoginMode) {
         authTitle.textContent = 'Tizimga Kirish'
         authSubmitBtn.textContent = 'Kirish'
-        authSwitchText.innerHTML =
-          'Akkauntingiz yo\'qmi? <a href="#" id="toggle-to-register">Ro\'yxatdan o\'tish</a>'
-        initDOMEvents()
+        authToggleText.textContent = "Akkauntingiz yo'qmi?"
+        toggleLink.textContent = "Ro'yxatdan o'tish"
+      } else {
+        authTitle.textContent = "Ro'yxatdan O'tish"
+        authSubmitBtn.textContent = "Ro'yxatdan O'tish"
+        authToggleText.textContent = 'Akkauntingiz bormi?'
+        toggleLink.textContent = 'Tizimga kirish'
       }
     }
   }
 
-  document.getElementById('auth-submit-btn').onclick = handleAuth
+  document.getElementById('auth-main-btn').onclick = handleAuth
   document.getElementById('logout-btn').onclick = logout
-  document.getElementById('nav-lugat-btn').onclick = () => switchSection('lugat')
-  document.getElementById('nav-speaking-btn').onclick = () => switchSection('speaking')
+  document.getElementById('tab-vocab').onclick = () => switchSection('lugat')
+  document.getElementById('tab-speaking').onclick = () => switchSection('speaking')
   document.getElementById('sidebar-add-btn').onclick = handleAddNewSidebarItem
   document.getElementById('add-word-btn').onclick = handleAddWord
   document.getElementById('mode-toggle-btn').onclick = toggleMode

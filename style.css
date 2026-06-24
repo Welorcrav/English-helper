@@ -90,6 +90,7 @@ body {
   align-items: center;
   justify-content: center;
   user-select: none;
+  -webkit-user-select: none;
   transition:
     color 0.2s,
     transform 0.1s;
@@ -718,4 +719,35 @@ button.nav-btn {
   .main-content {
     padding: 20px;
   }
+}
+
+/* App Screen va Section Visibility */
+#app-screen {
+  display: none;
+}
+#app-screen.active {
+  display: flex;
+}
+
+#auth-screen.hidden {
+  display: none;
+}
+
+.section-content {
+  display: block;
+  width: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#vocab-section-content,
+#speaking-section-content {
+  display: none;
+}
+
+#vocab-section-content.active,
+#speaking-section-content.active {
+  display: flex;
 }
