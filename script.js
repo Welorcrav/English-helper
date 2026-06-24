@@ -105,13 +105,22 @@ async function handleAuth() {
     return
   }
 
+  // Parol kamida 6 ta belgi bo'lishi kerak
+  if (passwordInput.length < 6) {
+    alert("Parol kamida 6 ta belgi bo'lishi kerak!")
+    return
+  }
+
   const userEmail = `${usernameInput}@memorizerapp.com`
   const { signInWithEmailAndPassword, createUserWithEmailAndPassword, doc, setDoc } = getFB()
 
   try {
     if (isLoginMode) {
+      // Tizimga kirish
       await signInWithEmailAndPassword(window.auth, userEmail, passwordInput)
+      console.log('✅ Tizimga muvaffaqiyatli kirildi')
     } else {
+      // Ro'yxatdan o'tish
       const userCredential = await createUserWithEmailAndPassword(
         window.auth,
         userEmail,
@@ -124,26 +133,38 @@ async function handleAuth() {
         speaking: {},
       })
 
-      alert('Profil muvaffaqiyatli yaratildi! Tizimga avtomatik kiriladi.')
+      console.log('✅ Profil muvaffaqiyatli yaratildi')
+      alert('Profil muvaffaqiyatli yaratildi!')
+      // Avtomatik kirish Firebase onAuthStateChanged orqali ro'y beradi
     }
   } catch (error) {
-    console.error('Firebase Auth Error Code:', error.code) // Konsolda aniq kodni ko'rish uchun
+    console.error('🔴 Firebase Error:', {
+      code: error.code,
+      message: error.message,
+      fullError: error,
+    })
 
     let errorMsg = 'Xatolik yuz berdi.'
 
-    // Firebase yangi va eski xatolik kodlarini tekshirish
-    if (
-      error.code === 'auth/wrong-password' ||
-      error.code === 'auth/user-not-found' ||
-      error.code === 'auth/invalid-credential'
-    ) {
-      errorMsg = "Foydalanuvchi nomi yoki parol noto'g'ri!"
-    } else if (error.code === 'auth/email-already-in-use') {
-      errorMsg = 'Bu foydalanuvchi nomi band!'
-    } else if (error.code === 'auth/weak-password') {
-      errorMsg = "Parol juda oddiy (kamida 6 ta belgi bo'lishi kerak)!"
+    // Firebase xatolik kodlarini tekshirish
+    if (error.code === 'auth/weak-password') {
+      errorMsg = 'Parol juda oddiy! Kamida 6 ta belgi, raqam va harflardan foydalaning.'
     } else if (error.code === 'auth/invalid-email') {
       errorMsg = 'Foydalanuvchi nomida taqiqlangan belgilardan foydalanilgan!'
+    } else if (error.code === 'auth/user-not-found') {
+      errorMsg = "Bu foydalanuvchi mavjud emas! Avval ro'yxatdan o'tib ko'ring."
+    } else if (error.code === 'auth/wrong-password') {
+      errorMsg = "Parol noto'g'ri!"
+    } else if (error.code === 'auth/email-already-in-use') {
+      errorMsg = 'Bu foydalanuvchi nomi band! Boshqa nom tanlang.'
+    } else if (error.code === 'auth/invalid-credential') {
+      errorMsg = "Foydalanuvchi nomi yoki parol noto'g'ri!"
+    } else if (error.code === 'auth/operation-not-allowed') {
+      errorMsg = "Bu operatsiya hozir mumkin emas. Admin bilan bog'laning."
+    } else if (error.code === 'auth/network-request-failed') {
+      errorMsg = "Internet aloqasi bo'lmadi. Iltimos, qayta urinib ko'ring."
+    } else {
+      errorMsg = `Xatolik: ${error.message || "Noma'lum xatolik"}`
     }
 
     alert(errorMsg)
