@@ -1,0 +1,721 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* 1. AUTHENTICATION SCREEN */
+.auth-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1e3a1e 0%, #121212 70%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.auth-box {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  border: 1px solid #2e7d32;
+  text-align: center;
+}
+
+.auth-box h2 {
+  color: #4caf50;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+.auth-box p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.auth-form input {
+  padding: 14px;
+  background-color: #121212;
+  border: 1px solid #444;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.auth-form input:focus {
+  border-color: #4caf50;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.password-wrapper input {
+  width: 100%;
+  padding-right: 45px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition:
+    color 0.2s,
+    transform 0.1s;
+}
+.toggle-password-btn:hover {
+  color: #4caf50;
+}
+.toggle-password-btn:active {
+  transform: scale(0.9);
+}
+
+#auth-main-btn {
+  padding: 14px;
+  background-color: #2e7d32;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#auth-main-btn:hover {
+  background-color: #4caf50;
+}
+
+.auth-toggle {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #888;
+}
+.auth-toggle a {
+  color: #4caf50;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+/* 2. APP CONTAINER */
+.app-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 290px;
+  background-color: #1e1e1e;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.profile-badge {
+  display: flex;
+  align-items: center;
+  background-color: #252525;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
+}
+.profile-badge .avatar {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+.profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.profile-info .welcome-text {
+  font-size: 0.75rem;
+  color: #888;
+}
+.profile-info strong {
+  font-size: 0.95rem;
+  color: #4caf50;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.2s;
+}
+.logout-btn i {
+  color: #2e7d32;
+}
+.logout-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.section-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background-color: #121212;
+  padding: 4px;
+  border-radius: 8px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.tab-btn:hover {
+  color: #fff;
+  background-color: #252525;
+}
+.tab-btn.active {
+  background-color: #252525;
+  color: #4caf50;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar h2 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #aaa;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+}
+.lesson-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: #252525;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: 1px solid transparent;
+}
+.lesson-item:hover {
+  background-color: #333;
+}
+.lesson-item.active {
+  background-color: #2e7d32;
+  border-color: #4caf50;
+  font-weight: bold;
+}
+.lesson-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px;
+}
+.lesson-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.lesson-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px;
+  border-radius: 4px;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+.lesson-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.lesson-btn.delete:hover {
+  background-color: #c62828;
+  color: #fff;
+}
+
+.add-lesson-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+.add-lesson-panel input {
+  padding: 10px;
+  background-color: #121212;
+  border: 1px solid #444;
+  color: white;
+  border-radius: 6px;
+  outline: none;
+}
+.add-lesson-panel button {
+  padding: 10px;
+  background-color: #1565c0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Zaxira paneli stillari */
+.security-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid #333;
+  padding-top: 12px;
+}
+.sec-btn {
+  background-color: #252525;
+  color: #bbb;
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.sec-btn:hover {
+  background-color: #333;
+  color: white;
+}
+.import-label {
+  display: block;
+}
+
+/* O'ng tomondagi asosiy kontent */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.content-header {
+  text-align: center;
+  margin-bottom: 25px;
+  width: 100%;
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  color: #4caf50;
+}
+.progress {
+  font-size: 1rem;
+  color: #aaa;
+}
+
+#vocab-section-content,
+#speaking-section-content {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.translator-panel {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+.translator-panel input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #1e1e1e;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+}
+.translator-panel input:focus,
+.add-lesson-panel input:focus {
+  border-color: #4caf50;
+}
+#add-word-btn {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.settings-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.settings-btn {
+  background: #222;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.settings-btn.active {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+/* Flashcard */
+.card-container {
+  width: 100%;
+  max-width: 400px;
+  height: 260px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+  background: #1e1e1e;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
+}
+.card.flipped {
+  transform: rotateY(180deg);
+}
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  border-radius: 15px;
+}
+.card-front .word {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #64b5f6;
+}
+.card-back {
+  transform: rotateY(180deg);
+  background: #252525;
+}
+.card-back .translation {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #81c784;
+}
+.hint {
+  font-size: 0.8rem;
+  color: #666;
+  position: absolute;
+  bottom: 15px;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  width: 100%;
+  max-width: 400px;
+}
+button.nav-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+}
+#prev-btn {
+  background-color: #37474f;
+}
+#next-btn {
+  background-color: #2e7d32;
+}
+#shuffle-btn {
+  background-color: #1565c0;
+  max-width: 60px;
+}
+
+/* Lug'at Ro'yxati */
+.words-list-container {
+  width: 100%;
+  max-width: 550px;
+  max-height: 350px;
+  overflow-y: auto;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  margin: 10px 0;
+}
+.words-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+.words-table th,
+.words-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #2d2d2d;
+}
+.words-table th {
+  background-color: #252525;
+  color: #4caf50;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.words-table tbody tr:hover {
+  background-color: #252525;
+}
+.words-table td {
+  vertical-align: middle;
+}
+.words-table td:first-child {
+  color: #888;
+  width: 40px;
+}
+.words-table td:nth-child(2) {
+  color: #64b5f6;
+  font-weight: 500;
+}
+.words-table td:nth-child(3) {
+  color: #81c784;
+}
+.words-table .lesson-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* Speaking Bo'limi */
+.speaking-input-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  margin-bottom: 25px;
+}
+.speaking-input-panel input,
+.speaking-input-panel textarea {
+  padding: 12px;
+  background-color: #121212;
+  border: 1px solid #444;
+  color: white;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.95rem;
+  width: 100%;
+  resize: vertical;
+}
+.speaking-input-panel input:focus,
+.speaking-input-panel textarea:focus {
+  border-color: #4caf50;
+}
+.speaking-input-panel button {
+  padding: 12px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.speaking-input-panel button:hover {
+  background-color: #2e7d32;
+}
+
+.speaking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+.speaking-item {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+.speaking-q {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #64b5f6;
+  padding-right: 120px;
+}
+.speaking-a {
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.5;
+  background-color: #121212;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 3px solid #4caf50;
+  white-space: pre-wrap;
+}
+.speaking-item .item-actions {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 5px;
+}
+
+/* Inline tahrirlash elementlari */
+.inline-edit-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #121212;
+  border: 1px solid #4caf50;
+  color: #64b5f6;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  outline: none;
+}
+.inline-edit-textarea {
+  width: 100%;
+  padding: 12px;
+  background-color: #121212;
+  border: 1px solid #4caf50;
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+.save-inline-btn {
+  background-color: #2e7d32 !important;
+  color: white !important;
+  padding: 4px 8px !important;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.save-inline-btn:hover {
+  background-color: #4caf50 !important;
+}
+
+.speaking-list::-webkit-scrollbar,
+.words-list-container::-webkit-scrollbar,
+.lesson-list::-webkit-scrollbar {
+  width: 6px;
+}
+.speaking-list::-webkit-scrollbar-thumb,
+.words-list-container::-webkit-scrollbar-thumb,
+.lesson-list::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    max-height: 480px;
+    border-right: none;
+    border-bottom: 1px solid #333;
+  }
+  .main-content {
+    padding: 20px;
+  }
+}

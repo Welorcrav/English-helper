@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Learning & Speaking Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="auth-container" id="auth-screen">
+      <div class="auth-box">
+        <h2 id="auth-title">Tizimga Kirish</h2>
+        <p id="auth-subtitle">Platformadan foydalanish uchun profilingizga kiring</p>
+
+        <div class="auth-form">
+          <input
+            type="text"
+            id="auth-username"
+            placeholder="Foydalanuvchi nomi (username)..."
+            autocomplete="off"
+          />
+
+          <div class="password-wrapper">
+            <input type="password" id="auth-password" placeholder="Parol..." />
+            <button
+              type="button"
+              class="toggle-password-btn"
+              id="toggle-password-eye"
+              onclick="togglePasswordVisibility()"
+              title="Parolni ko'rsatish"
+            >
+              👁️
+            </button>
+          </div>
+
+          <button id="auth-main-btn" onclick="handleAuth()">Kirish</button>
+        </div>
+
+        <div class="auth-toggle">
+          <span id="auth-toggle-text">Akkauntingiz yo'qmi?</span>
+          <a href="#" id="auth-toggle-link" onclick="toggleAuthMode()">Ro'yxatdan o'tish</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-container" id="app-screen" style="display: none">
+      <div class="sidebar">
+        <div class="profile-badge">
+          <div class="avatar">👤</div>
+          <div class="profile-info">
+            <span class="welcome-text">Xush kelibsiz,</span>
+            <strong id="user-display-name">Mehmon</strong>
+          </div>
+          <button class="logout-btn" onclick="logout()" title="Profildan chiqish">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+
+        <div class="section-tabs">
+          <button class="tab-btn active" id="tab-vocab" onclick="switchSection('vocab')">
+            📝 Lug'at
+          </button>
+          <button class="tab-btn" id="tab-speaking" onclick="switchSection('speaking')">
+            🗣️ Speaking
+          </button>
+        </div>
+
+        <h2 id="sidebar-title">Darslar</h2>
+        <div class="lesson-list" id="lesson-list"></div>
+
+        <div class="add-lesson-panel">
+          <input type="text" id="new-lesson-input" placeholder="Yangi dars nomi..." />
+          <button id="add-sidebar-item-btn" onclick="addNewSidebarItem()">+ Qo'shish</button>
+        </div>
+
+        <div class="security-panel">
+          <button class="sec-btn export-btn" onclick="exportUserData()">
+            📥 Ma'lumotlarni Saqlash (Backup)
+          </button>
+          <label class="sec-btn import-label">
+            📤 Fayldan Tiklash (Restore)
+            <input
+              type="file"
+              id="import-file-input"
+              onchange="importUserData(event)"
+              accept=".json"
+              style="display: none"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div id="vocab-section-content" style="display: block; width: 100%">
+          <div class="content-header">
+            <h1 id="current-lesson-title">Lesson 1</h1>
+            <div class="progress" id="progress">1 / 32</div>
+          </div>
+
+          <div class="translator-panel">
+            <input type="text" id="new-en-input" placeholder="Inglizcha so'z..." />
+            <input type="text" id="new-uz-input" placeholder="O'zbekcha tarjimasi..." />
+            <button id="add-word-btn" onclick="addNewWord()">So'z Qo'shish</button>
+          </div>
+
+          <div class="settings-bar">
+            <button class="settings-btn active" id="mode-btn" onclick="toggleMode()">
+              Rejim: EN ➔ UZ
+            </button>
+            <button class="settings-btn" id="view-list-btn" onclick="toggleListView()">
+              📋 So'zlarni Ko'rish
+            </button>
+            <button class="settings-btn" onclick="resetAllData()">🔄 Tozalash</button>
+          </div>
+
+          <div class="card-container" id="card-area" onclick="flipCard()">
+            <div class="card" id="card">
+              <div class="card-face card-front">
+                <div class="word" id="word-front">Yuklanmoqda...</div>
+                <div class="hint">Tarjimasini koʻrish uchun bosing</div>
+              </div>
+              <div class="card-face card-back">
+                <div class="translation" id="word-back">Yuklanmoqda...</div>
+                <div class="hint">Orqaga qaytish uchun bosing</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="words-list-container" id="words-list-area" style="display: none">
+            <table class="words-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Inglizcha</th>
+                  <th>O'zbekcha</th>
+                  <th style="text-align: right; padding-right: 20px">Amallar</th>
+                </tr>
+              </thead>
+              <tbody id="words-table-body"></tbody>
+            </table>
+          </div>
+
+          <div class="controls" id="controls-area">
+            <button class="nav-btn" id="prev-btn" onclick="prevCard()">Orqaga</button>
+            <button class="nav-btn" id="shuffle-btn" onclick="shuffleCards()">🔀</button>
+            <button class="nav-btn" id="next-btn" onclick="nextCard()">Oldinga</button>
+          </div>
+        </div>
+
+        <div id="speaking-section-content" style="display: none; width: 100%">
+          <div class="content-header">
+            <h1 id="current-topic-title">Mavzu tanlanmagan</h1>
+            <p class="progress" id="speaking-count">Savollar soni: 0</p>
+          </div>
+
+          <div class="speaking-input-panel">
+            <input type="text" id="new-question-input" placeholder="Savol (Question)..." />
+            <textarea
+              id="new-answer-input"
+              placeholder="Namunaviy javob (Sample Answer)..."
+              rows="3"
+            ></textarea>
+            <button onclick="addNewSpeakingQA()">Savol-Javobni Qo'shish</button>
+          </div>
+
+          <div class="speaking-list" id="speaking-qa-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
