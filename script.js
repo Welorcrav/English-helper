@@ -19,8 +19,23 @@ const getFB = () => window.fbMethods
 
 // DOM YUKLANGANDA ISHGA TUSHADIGAN ASOSIY FUNKSIYA
 document.addEventListener('DOMContentLoaded', () => {
-  initDOMEvents()
-  checkAuthStatus()
+  // Firebase tayyorligi uchun kutish
+  const waitForFirebase = setInterval(() => {
+    if (window.auth && window.db && window.fbMethods) {
+      clearInterval(waitForFirebase)
+      console.log('✅ Firebase tayyor!')
+      initDOMEvents()
+      checkAuthStatus()
+    }
+  }, 100)
+
+  // 5 soniyadan keyin timeout
+  setTimeout(() => {
+    clearInterval(waitForFirebase)
+    if (!window.auth) {
+      console.error('❌ Firebase init qilishda xato!')
+    }
+  }, 5000)
 })
 
 // SAHIFA YUKLANGANDA STATUSNI VA FOYDALANUVCHINI TEKSHIRISH
