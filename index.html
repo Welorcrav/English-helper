@@ -4,8 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Language Learning & Speaking Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="style.css" />
+    <!-- Firebase SDK Modullari -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        signOut,
+      } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        getDoc,
+      } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+
+      // SIZNING SHAXSIY FIREBASE KALITLARINGIZ (`image_e93e9d.png`dan olindi)
+      const firebaseConfig = {
+        apiKey: 'AIzaSyCTQcpe-zIpupCKV6XM329PakwRcL0Ya0I',
+        authDomain: 'english-vocabs-memorizer.firebaseapp.com',
+        projectId: 'english-vocabs-memorizer',
+        storageBucket: 'english-vocabs-memorizer.firebasestorage.app',
+        messagingSenderId: '342844815020',
+        appId: '1:342844815020:web:4f59c0c0cb43cec17cd109',
+        measurementId: 'G-J1H9JL75DS',
+      }
+
+      // Firebase xizmatlarini global oynaga (window) ulash
+      const app = initializeApp(firebaseConfig)
+      window.auth = getAuth(app)
+      window.db = getFirestore(app)
+      window.fbMethods = {
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        signOut,
+        doc,
+        setDoc,
+        getDoc,
+      }
+    </script>
   </head>
   <body>
     <div class="auth-container" id="auth-screen">
