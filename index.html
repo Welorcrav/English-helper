@@ -12,45 +12,46 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="style.css" />
-    <!-- Firebase SDK Modullari -->
+    <!-- Firebase SDK Modullari - Try/Catch bilan error handling -->
     <script type="module">
-      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
-      import {
-        getAuth,
-        signInWithEmailAndPassword,
-        createUserWithEmailAndPassword,
-        signOut,
-      } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
-      import {
-        getFirestore,
-        doc,
-        setDoc,
-        getDoc,
-      } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+      async function initializeFirebase() {
+        try {
+          const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js')
+          const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } =
+            await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js')
+          const { getFirestore, doc, setDoc, getDoc } =
+            await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js')
 
-      // SIZNING SHAXSIY FIREBASE KALITLARINGIZ (`image_e93e9d.png`dan olindi)
-      const firebaseConfig = {
-        apiKey: 'AIzaSyCTQcpe-zIpupCKV6XM329PakwRcL0Ya0I',
-        authDomain: 'english-vocabs-memorizer.firebaseapp.com',
-        projectId: 'english-vocabs-memorizer',
-        storageBucket: 'english-vocabs-memorizer.firebasestorage.app',
-        messagingSenderId: '342844815020',
-        appId: '1:342844815020:web:4f59c0c0cb43cec17cd109',
-        measurementId: 'G-J1H9JL75DS',
+          const firebaseConfig = {
+            apiKey: 'AIzaSyCTQcpe-zIpupCKV6XM329PakwRcL0Ya0I',
+            authDomain: 'english-vocabs-memorizer.firebaseapp.com',
+            projectId: 'english-vocabs-memorizer',
+            storageBucket: 'english-vocabs-memorizer.firebasestorage.app',
+            messagingSenderId: '342844815020',
+            appId: '1:342844815020:web:4f59c0c0cb43cec17cd109',
+            measurementId: 'G-J1H9JL75DS',
+          }
+
+          const app = initializeApp(firebaseConfig)
+          window.auth = getAuth(app)
+          window.db = getFirestore(app)
+          window.fbMethods = {
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            signOut,
+            doc,
+            setDoc,
+            getDoc,
+          }
+          console.log('✅ Firebase muvaffaqiyatli yuklandi!')
+        } catch (error) {
+          console.warn('⚠️ Firebase yuklashda xato:', error.message)
+          console.warn('📱 Offline rejim yoqiladi')
+          // Offline mode enabled in script.js
+        }
       }
 
-      // Firebase xizmatlarini global oynaga (window) ulash
-      const app = initializeApp(firebaseConfig)
-      window.auth = getAuth(app)
-      window.db = getFirestore(app)
-      window.fbMethods = {
-        signInWithEmailAndPassword,
-        createUserWithEmailAndPassword,
-        signOut,
-        doc,
-        setDoc,
-        getDoc,
-      }
+      initializeFirebase()
     </script>
   </head>
   <body>

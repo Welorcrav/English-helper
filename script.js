@@ -13,6 +13,7 @@ let currentIndex = 0
 let isEnToUz = true
 let isCardFlipped = false
 let isLoginMode = true
+let isOfflineMode = false // Offline rejim indikatori
 
 // Firebase metodlariga oson ulanish uchun yordamchi funksiya
 const getFB = () => window.fbMethods
@@ -24,19 +25,68 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.auth && window.db && window.fbMethods) {
       clearInterval(waitForFirebase)
       console.log('✅ Firebase tayyor!')
+      isOfflineMode = false
       initDOMEvents()
       checkAuthStatus()
     }
   }, 100)
 
-  // 5 soniyadan keyin timeout
+  // 3 soniyadan keyin timeout - offline mode
   setTimeout(() => {
     clearInterval(waitForFirebase)
     if (!window.auth) {
-      console.error('❌ Firebase init qilishda xato!')
+      console.warn("⚠️ Firebase init bo'lmadi. Offline mode yoqildi.")
+      isOfflineMode = true
+
+      // Offline mode'da ro'yxatdan o'tish ekrani ko'rsatish
+      initDOMEvents()
+
+      // LocalStorage'dan ma'lumotlarni yuklash
+      const savedUser = localStorage.getItem('currentUser')
+      if (savedUser) {
+        currentActiveUser = savedUser
+        loadOfflineData()
+        showAppScreen()
+      } else {
+        showAuthScreen()
+      }
     }
-  }, 5000)
+  }, 3000)
 })
+
+// OFFLINE MODE - localStorage'dan ma'lumotlarni yuklash
+function loadOfflineData() {
+  const saved = localStorage.getItem('userAppData')
+  if (saved) {
+    try {
+      const data = JSON.parse(saved)
+      userLessonsData = data.lessons || {}
+      userSpeakingData = data.speaking || {}
+      console.log("📂 Offline ma'lumotlar yuklandi")
+    } catch (e) {
+      console.error("Offline ma'lumotlarni yuklashda xato:", e)
+      userLessonsData = {}
+      userSpeakingData = {}
+    }
+  }
+
+  currentLesson = Object.keys(userLessonsData)[0] || ''
+  currentTopic = Object.keys(userSpeakingData)[0] || ''
+  renderSidebar()
+  switchSection('lugat')
+}
+
+// OFFLINE MODE - localStorage'ga ma'lumotlarni saqlash
+async function saveOfflineData() {
+  localStorage.setItem(
+    'userAppData',
+    JSON.stringify({
+      lessons: userLessonsData,
+      speaking: userSpeakingData,
+    })
+  )
+  console.log("💾 Offline ma'lumotlar saqlandi")
+}
 
 // SAHIFA YUKLANGANDA STATUSNI VA FOYDALANUVCHINI TEKSHIRISH
 function checkAuthStatus() {
@@ -189,9 +239,14 @@ async function handleAuth() {
 // PROFILIDAN CHIQISH
 async function logout() {
   if (confirm('Haqiqatan ham profilingizdan chiqmoqchimisiz?')) {
-    const { signOut } = getFB()
-    await signOut(window.auth)
     currentActiveUser = null
+    localStorage.removeItem('currentUser')
+
+    if (!isOfflineMode && window.auth) {
+      const { signOut } = getFB()
+      await signOut(window.auth)
+    }
+
     showAuthScreen()
   }
 }
@@ -199,6 +254,11 @@ async function logout() {
 function showAuthScreen() {
   document.getElementById('app-screen').style.display = 'none'
   document.getElementById('auth-screen').style.display = 'flex'
+}
+
+function showAppScreen() {
+  document.getElementById('auth-screen').style.display = 'none'
+  document.getElementById('app-screen').style.display = 'flex'
 }
 
 // INTERFEYS ELEMENTLARINI BOSHQARISH
